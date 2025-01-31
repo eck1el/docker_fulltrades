@@ -1,20 +1,22 @@
-name: aciamericas_ods
+name: fulltrades
 services:
 
-  #proxy
+  # 📌 Proxy inverso (Nginx Proxy Manager)
   proxy:
     image: 'jc21/nginx-proxy-manager:latest'
     restart: unless-stopped
     ports:
-      - '80:80'  # public http port
-      - '443:443'  # public https port
-      - '81:81'  # admin web port
+      - '80:80'  # HTTP público
+      - '443:443'  # HTTPS público
+      - '81:81'  # Panel de administración de Nginx Proxy Manager
     volumes:
       - ./data:/data
       - ./letsencrypt:/etc/letsencrypt
       - ./nginx-proxy-manager/nginx-proxy-manager.json:/app/config/production.json
       - ./nginx-proxy/certbot.conf:/etc/nginx/conf.d/certbot.conf
     container_name: proxy
+    networks:
+      - ecommerce_net
 
   # 📌 Base de datos PostgreSQL
   postgres:
@@ -32,7 +34,7 @@ services:
     networks:
       - ecommerce_net
 
-      # 📌 Panel de administración para PostgreSQL (pgAdmin)
+  # 📌 Panel de administración para PostgreSQL (pgAdmin)
   pgadmin:
     image: dpage/pgadmin4
     container_name: pgadmin
@@ -49,6 +51,11 @@ services:
     volumes:
       - pgadmin_data:/var/lib/pgadmin
 
+# 📌 Definición de volúmenes (para persistencia de datos)
 volumes:
   postgres_data:
   pgadmin_data:
+
+networks:
+  ecommerce_net:
+    driver: bridge
