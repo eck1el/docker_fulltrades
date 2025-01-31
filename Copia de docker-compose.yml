@@ -1,0 +1,39 @@
+name: aciamericas_ods
+services:
+  proxy:
+    image: 'jc21/nginx-proxy-manager:latest'
+    restart: unless-stopped
+    ports:
+      - '80:80'  # public http port
+      - '443:443'  # public https port
+      - '81:81'  # admin web port
+    volumes:
+      - ./data:/data
+      - ./letsencrypt:/etc/letsencrypt
+      - ./nginx-proxy-manager/nginx-proxy-manager.json:/app/config/production.json
+      - ./nginx-proxy/certbot.conf:/etc/nginx/conf.d/certbot.conf
+    container_name: proxy
+
+  api:
+    image: aciamericas_ods:1.2.1
+    build: .
+    restart: always
+    ports:
+      - '8000:8000'
+    volumes:
+      - app:/usr/src/app/backend/media  # Volumen para los datos persistentes
+    container_name: ods_api
+
+
+  frontend:
+    image: aciamericas_frontend:1.0.0
+    build:
+      context: ../aciamericas_ods
+    restart: always
+    ports:
+      - '3000:80' #Mapeando puerto 3000 del host al puerto 80 del contenedor
+    container_name: ods_frontend
+
+
+volumes:
+  app:

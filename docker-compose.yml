@@ -1,0 +1,34 @@
+name: aciamericas_ods
+services:
+
+  #proxy
+  proxy:
+    image: 'jc21/nginx-proxy-manager:latest'
+    restart: unless-stopped
+    ports:
+      - '80:80'  # public http port
+      - '443:443'  # public https port
+      - '81:81'  # admin web port
+    volumes:
+      - ./data:/data
+      - ./letsencrypt:/etc/letsencrypt
+      - ./nginx-proxy-manager/nginx-proxy-manager.json:/app/config/production.json
+      - ./nginx-proxy/certbot.conf:/etc/nginx/conf.d/certbot.conf
+    container_name: proxy
+
+  # 📌 Base de datos PostgreSQL
+  postgres:
+    image: postgres:15
+    container_name: postgres
+    restart: always
+    environment:
+      POSTGRES_DB: ecommerce_db
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: secret123
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - ecommerce_net
+
