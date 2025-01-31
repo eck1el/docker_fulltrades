@@ -56,6 +56,7 @@ volumes:
   postgres_data:
   pgadmin_data:
 
+
 networks:
   ecommerce_net:
     driver: bridge
