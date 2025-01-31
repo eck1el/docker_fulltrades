@@ -32,3 +32,23 @@ services:
     networks:
       - ecommerce_net
 
+      # 📌 Panel de administración para PostgreSQL (pgAdmin)
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@ecommerce.com  # Cambia esto a tu email real
+      PGADMIN_DEFAULT_PASSWORD: admin123  # Cambia la contraseña por seguridad
+    ports:
+      - "5050:80"  # Accederás a pgAdmin en http://localhost:5050
+    depends_on:
+      - postgres
+    networks:
+      - ecommerce_net
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+
+volumes:
+  postgres_data:
+  pgadmin_data:
