@@ -26,7 +26,7 @@ services:
     environment:
       POSTGRES_DB: ecommerce_db
       POSTGRES_USER: admin
-      POSTGRES_PASSWORD: secret123
+      POSTGRES_PASSWORD: AqAlAUXixKwE
     volumes:
       - postgres_data:/var/lib/postgresql/data
     ports:
