@@ -51,10 +51,45 @@ services:
     volumes:
       - pgadmin_data:/var/lib/pgadmin
 
+  
+  api:
+    image: fulltrades:1.1.1
+    build: ../fulltrades_backend
+    restart: always
+    ports:
+      - '8000:8000'
+    volumes:
+      - app:/usr/src/app
+    container_name: api
+    
+
+  admin_frontend:
+    image: fulltrades_admin_frontend:1.0.0
+    build:
+      context: ../fulltrades_erp_admin_frontend
+    restart: always
+    ports:
+      - '3001:80' # mapeando el puerto del host a 3001
+    container_name: admin_frontend
+    networks:
+      - ecommerce_net
+
+  ecommerce:
+    image: ecommerce:1.0.0
+    build:
+      context: ../admintek_erp_frontend
+    restart: always
+    ports:
+      - '3002:80' # mapeando el puerto del host a 3002
+    container_name: ecommerce
+    networks:
+      - ecommerce_net
+
 # 📌 Definición de volúmenes (para persistencia de datos)
 volumes:
   postgres_data:
   pgadmin_data:
+  app:
 
 
 networks:
