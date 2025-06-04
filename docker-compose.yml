@@ -40,10 +40,10 @@ services:
     container_name: pgadmin
     restart: always
     environment:
-      PGADMIN_DEFAULT_EMAIL: admin@ecommerce.com  # Cambia esto a tu email real
-      PGADMIN_DEFAULT_PASSWORD: admin123  # Cambia la contraseña por seguridad
+      PGADMIN_DEFAULT_EMAIL: admin@ecommerce.com
+      PGADMIN_DEFAULT_PASSWORD: admin123
     ports:
-      - "5050:80"  # Accederás a pgAdmin en http://localhost:5050
+      - "5050:80"  # http://localhost:5050
     depends_on:
       - postgres
     networks:
@@ -59,7 +59,7 @@ services:
     ports:
       - '8000:8000'
     volumes:
-      - app:/usr/src/app
+      - media:/usr/src/app/apis/media
     container_name: api
     
 
