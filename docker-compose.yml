@@ -13,7 +13,6 @@ services:
       - ./data:/data
       - ./letsencrypt:/etc/letsencrypt
       - ./nginx-proxy-manager/nginx-proxy-manager.json:/app/config/production.json
-      - ./nginx-proxy/certbot.conf:/etc/nginx/conf.d/certbot.conf
     container_name: proxy
     networks:
       - ecommerce_net
