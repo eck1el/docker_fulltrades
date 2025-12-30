@@ -60,6 +60,9 @@ services:
     volumes:
       - media:/usr/src/app/apis/media
     container_name: api
+    shm_size: "1gb"
+    networks:
+      - ecommerce_net
     
 
   admin_frontend:
